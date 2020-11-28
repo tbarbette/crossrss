@@ -1,3 +1,6 @@
+%info
+This script pipes a trace to a LB, then to 4 virtual servers with 4 cores, eventually running a router , NAT and DPI
+
 %variables
 always:ALWAYS_UP=true
 MODE=table
@@ -5,9 +8,6 @@ all:MODE={rr,chash,table}
 TIME=10
 FREQ=10
 ALPHA=0.5
-//TRACE=/mnt/traces/kth/morning/20190507.morning.rx.ip.anon.nopayload.pcap.gz
-//TRACE=/mnt/traces/kth/morning/splits/morning-single.transformed.pcap
-//TRACE=/mnt/traces/kth/morning/splits/morning-quad.transformed.pcap
 TRACE=/mnt/traces/campus-split/kth-morning-merged/kth-morning-merged.pcap
 
 TIM_MAX=100
@@ -51,7 +51,7 @@ TIMING_FNT?=EXPAND(min(1,sin(min(x*0.25,0.5) * pi))*${TIM_MAX})
 s=$(pwd)
 #//cd /home/tom/workspace/fastclick/
 echo $PATH
-cat FNT $s/cheetahpp.click > C
+cat FNT $s/crossrss.click > C
 $GDB click --dpdk -l 0-35 -- C trace=$TRACE mode=$MODE  2>&1
 
 
@@ -101,7 +101,7 @@ if "SUMSDROP" in RESULTS and "SUMSCOUNT" in RESULTS:
 
 %-always:import cpuload CPUMIN=2 CPUMAX=18
 
-%file cheetahpp.click
+%file crossrss.click
 elementclass LB {
     input 
     
