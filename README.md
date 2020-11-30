@@ -1,6 +1,6 @@
 # CrossRSS: Stateless CPU-aware datacenter load-balancing
 
-This repository contains information/source code to perform the experiments done in [CrossRSS][crossrss-poster] published at [CoNEXT'20][conext20-page].
+This repository contains information/source code to perform the experiments done in [CrossRSS][crossrss-poster] published at [CoNEXT'20 poster session][conext20-page].
 
 ## Experiments
 
