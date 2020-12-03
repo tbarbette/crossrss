@@ -8,7 +8,6 @@ all:MODE={rr,chash,table}
 TIME=10
 FREQ=10
 ALPHA=0.5
-TRACE=/mnt/traces/campus-split/kth-morning-merged/kth-morning-merged.pcap
 
 TIM_MAX=100
 //CANNOT BE CHANGED!
@@ -46,13 +45,20 @@ GDB=
 gdb:GDB=gdb -ex run -ex "signal 2" -ex "bt" -batch -args
 
 TIMING_FNT?=EXPAND(min(1,sin(min(x*0.25,0.5) * pi))*${TIM_MAX})
+STATE=FlowIPManagerIMP
+nodpdk:STATE=FlowIPManagerHMP
 
 %script sudo=true
 s=$(pwd)
 #//cd /home/tom/workspace/fastclick/
 echo $PATH
 cat FNT $s/crossrss.click > C
-$GDB click --dpdk -l 0-35 -- C trace=$TRACE mode=$MODE  2>&1
+if click-buildtool provides dpdk ; then
+    CPUARGS="--dpdk -l 0-35 --"
+else
+    CPUARGS="-j 36 -a"
+fi
+$GDB click $CPUARGS C trace=$TRACE mode=$MODE  2>&1
 
 
 %pyexit
@@ -106,7 +112,7 @@ elementclass LB {
     input 
     
     -> avg :: AverageCounterMP
-    -> FlowIPManagerIMP(CAPACITY 2000000) -> fl :: CrossRSS(LB_MODE $mode, LST_MODE cpu, AWRR_ALPHA $ALPHA, TABLE_SIZE $RETA_SIZE)[0-3] => [0-3]output;
+    -> $STATE(CAPACITY 2000000) -> fl :: CrossRSS(LB_MODE $mode, LST_MODE cpu, AWRR_ALPHA $ALPHA, TABLE_SIZE $RETA_SIZE)[0-3] => [0-3]output;
 }
 
 //Simulate a Core
