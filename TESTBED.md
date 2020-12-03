@@ -9,23 +9,9 @@ Our experiments require `npf` and `fastclick`. You should setup your testbed bas
 We use [NPF][npf-repo] tool to run our experiments. However, it is possible to run them manually. To setup NPF, you can run the following commands:
 
 ```bash
-git clone https://github.com/tbarbette/npf.git && cd npf
-sudo apt install python3 python3-pip libssl-dev
-pip3 install --user -r requirements.txt
+sudo apt install python3 python3-pip
+pip3 install --user npf
 ```
-
-You should also define your server in NPF. To do so, you can define `dut.node` in the `npf/cluster` according to the example node files. For example, one of our servers is defined as follows:
-
-```
-path=/home/tom/npf/
-addr=server0.kth.se
-arch=skylake
-nfs=0
-```
-
-- `path` is the path to NPF on a given machine. If you do not have Network File System (NFS) in your testbed, you should uncomment `nfs=0`.
-
-- `addr` is the address of each machine. It can be either its URL or its IP address.
 
 NPF uses ssh to connect to the servers. Please make sure that you have setup passwordless ssh on your system. If you want to use your current key (e.g., `ida_rsa`) on a different server, you can run the following commands:
 

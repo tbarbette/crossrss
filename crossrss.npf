@@ -109,11 +109,11 @@ elementclass LB {
     -> FlowIPManagerIMP(CAPACITY 2000000) -> fl :: CrossRSS(LB_MODE $mode, LST_MODE cpu, AWRR_ALPHA $ALPHA, TABLE_SIZE $RETA_SIZE)[0-3] => [0-3]output;
 }
 
-
+//Simulate a Core
 elementclass Core {
     input 
-        //-> Queue 
-        -> uq :: Pipeliner(BLOCKING $BLOCKING, CAPACITY $QCAP, ALWAYS_UP $ALWAYS_UP, VERBOSE false) //:: Unqueue 
+        //Each core has a software queue
+        -> uq :: Pipeliner(BLOCKING $BLOCKING, CAPACITY $QCAP, ALWAYS_UP $ALWAYS_UP, VERBOSE false)
         -> count :: Counter
 
         -> WorkPackage(W $W, R 50, N 10, S 1, PAYLOAD true)
@@ -123,6 +123,7 @@ elementclass Core {
 
 }
 
+//Simulate a core
 elementclass Machine { $th, $id |
     input
 
@@ -219,7 +220,7 @@ Script(TYPE ACTIVE,
 
 DriverManager(wait 11s);
 
-
+//File of test function when NAT,FW and DPI are in use
 %file FNT
 elementclass NAT {
     input 
